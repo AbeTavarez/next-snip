@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/db";
 
@@ -8,18 +9,32 @@ interface SnippetShowPageProps {
 }
 
 export default async function SnippetShowPage(props: SnippetShowPageProps) {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 2000));
   const snippet = await db.snippet.findFirst({
-    where: {id: Number(props.params.id)}
+    where: { id: Number(props.params.id) },
   });
 
- if (!snippet) return notFound();
+  if (!snippet) return notFound();
 
- return (
+  return (
     <div>
-        {snippet.title}
+      <div className='flex justify-between m-4 items-center'>
+        <h1 className='text-xl bold'>{snippet.title}</h1>
+
+        <div className='flex gap-2'>
+          <Link
+            href={`/snippets/${snippet.id}/edit`}
+            className='p-2 border rounded'
+          >
+            Edit
+          </Link>
+          <button className='p-2 border rounded'>Delete</button>
+        </div>
+      </div>
+
+      <pre className='p-3 border rounded bg-gray-200 border-gray-200'>
+        <code>{snippet.code}</code>
+      </pre>
     </div>
- )
-
-
+  );
 }
