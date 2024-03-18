@@ -14,7 +14,7 @@ export default async function Home() {
       </div>
 
       {snippets.map((snippet) => (
-        <div className='flex flex-col gap-3'>
+        <div className='flex flex-col gap-3' key={snippet.id}>
           <Link
             href={`/snippets/${snippet.id}`}
             key={snippet.id}
